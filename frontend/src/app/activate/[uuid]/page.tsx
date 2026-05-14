@@ -184,21 +184,34 @@ export default function ActivatePage({ params }: { params: Promise<{ uuid: strin
                 { label: "Pets", value: "PETS" },
                 { label: "Travel", value: "TRAVEL" },
                 { label: "Tech", value: "TECH" }
-              ].map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  onClick={() => setTagType(item.value)}
-                  className={`py-4 rounded-2xl font-bold border transition-all ${
-                    tagType === item.value 
-                      ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100" 
-                      : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+              ].map((item) => {
+                const isLocked = searchParams.get("type") !== null;
+                const isSelected = tagType === item.value;
+                
+                return (
+                  <button
+                    key={item.value}
+                    type="button"
+                    disabled={isLocked && !isSelected}
+                    onClick={() => !isLocked && setTagType(item.value)}
+                    className={`py-4 rounded-2xl font-bold border transition-all ${
+                      isSelected 
+                        ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100" 
+                        : isLocked
+                        ? "bg-gray-50 border-gray-100 text-gray-300 opacity-50 cursor-not-allowed"
+                        : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
             </div>
+            {searchParams.get("type") && (
+              <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider px-1">
+                Таңдалған пакет бойынша бекітілді
+              </p>
+            )}
           </div>
 
           {/* Profile Selection */}

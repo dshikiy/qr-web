@@ -251,48 +251,65 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+      <header className="mb-12">
+        <h1 className="text-4xl font-black tracking-tight text-gray-900">Басты бет</h1>
+        <p className="text-gray-500 mt-2 font-medium">SafeTag жүйесіне қош келдіңіз!</p>
+      </header>
+
+      {/* Stats Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="bg-white p-8 rounded-[2rem] soft-shadow border border-gray-50 group hover:border-blue-100 transition-all">
+          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
+            <QrIcon size={24} />
+          </div>
+          <p className="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-1">Биркалар саны</p>
+          <h3 className="text-3xl font-black text-gray-900">{tags.length}</h3>
+        </div>
+        
+        <div className="bg-white p-8 rounded-[2rem] soft-shadow border border-gray-50 group hover:border-green-100 transition-all">
+          <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-600 group-hover:text-white transition-all">
+            <ShieldCheck size={24} />
+          </div>
+          <p className="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-1">Белсенді</p>
+          <h3 className="text-3xl font-black text-gray-900">{tags.filter(t => t.status === 'ACTIVE').length}</h3>
+        </div>
+
+        <div className="bg-white p-8 rounded-[2rem] soft-shadow border border-gray-50 group hover:border-orange-100 transition-all">
+          <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+            <UserIcon size={24} />
+          </div>
+          <p className="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-1">Профильдер</p>
+          <h3 className="text-3xl font-black text-gray-900">{profiles.length}</h3>
+        </div>
+
+        <div className="bg-blue-600 p-8 rounded-[2rem] shadow-xl shadow-blue-100 flex flex-col justify-between group hover:bg-blue-700 transition-all cursor-pointer" onClick={handleCreateTestTag}>
+          <div className="w-12 h-12 bg-white/20 text-white rounded-xl flex items-center justify-center mb-4">
+            <Plus size={24} />
+          </div>
+          <div>
+            <h4 className="text-white font-black text-lg leading-tight">Жаңа бирка қосу</h4>
+            <p className="text-blue-100 text-xs font-medium mt-1">Қауіпсіздікті арттырыңыз</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 mt-16 pt-8 border-t border-gray-100">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-gray-900">Менің биркаларым</h1>
-          <p className="text-gray-500 mt-2 font-medium">Белсенді қорғаныс құралдарының тізімі</p>
+          <h2 className="text-3xl font-black tracking-tight text-gray-900" id="tags-section">Менің биркаларым</h2>
+          <p className="text-gray-500 mt-1 font-medium">Барлық тіркелген құралдар</p>
         </div>
         <div className="flex flex-wrap gap-4">
-          <Link 
-            href="/dashboard/profiles" 
-            className="bg-white border border-gray-100 p-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-gray-50 transition-all soft-shadow text-gray-600"
-          >
-            <UserIcon size={20} />
-            <span className="hidden sm:inline">Профильдер</span>
-          </Link>
-          
           {user?.is_admin && (
             <Link 
               href="/admin" 
-              className="bg-blue-600 text-white px-6 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+              className="bg-white border border-gray-100 px-6 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-gray-50 transition-all soft-shadow text-gray-600"
             >
-              <ShieldCheck size={20} />
-              <span className="hidden sm:inline">Админ</span>
+              <ShieldCheck size={20} className="text-blue-600" />
+              <span>Админ панель</span>
             </Link>
           )}
-          
-          <button 
-            onClick={handleCreateTestTag}
-            disabled={creating}
-            className="bg-gray-900 text-white px-6 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-gray-800 transition-all shadow-xl shadow-gray-200 active:scale-95 disabled:opacity-50"
-          >
-            {creating ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
-            <span>Бирка қосу</span>
-          </button>
-          
-          <button 
-            onClick={handleLogout}
-            className="p-4 bg-white border border-gray-100 text-gray-400 hover:text-red-500 rounded-2xl transition-all soft-shadow"
-            title="Шығу"
-          >
-            <LogOut size={24} />
-          </button>
         </div>
-      </header>
+      </div>
 
       {/* Filters & Search */}
       <div className="flex flex-col md:flex-row gap-4 mb-8">
