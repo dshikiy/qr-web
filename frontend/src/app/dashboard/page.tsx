@@ -139,7 +139,9 @@ export default function DashboardPage() {
       const res = await fetch(`${apiUrl}/api/test/create-tag`, { method: "POST" });
       if (res.ok) {
         const data = await res.json();
-        router.push(`/activate/${data.id}`);
+        // Pass selected product type if available
+        const typeParam = selectedProduct ? `?type=${selectedProduct.id.toUpperCase()}` : "";
+        router.push(`/activate/${data.id}${typeParam}`);
       }
     } catch (error) {
       console.error("Failed to create test tag:", error);

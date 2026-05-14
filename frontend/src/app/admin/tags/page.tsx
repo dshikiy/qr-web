@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/auth";
 
 export default function AdminTagsPage() {
   const [count, setCount] = useState(50);
@@ -30,10 +31,9 @@ export default function AdminTagsPage() {
     setGeneratedTags([]);
     
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     
     try {
-      const res = await fetch(`${apiUrl}/api/admin/tags/batch`, {
+      const res = await fetch(`${API_URL}/api/admin/tags/batch`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

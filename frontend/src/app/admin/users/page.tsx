@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/auth";
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -25,10 +26,9 @@ export default function AdminUsersPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       
       try {
-        const res = await fetch(`${apiUrl}/api/admin/users`, {
+        const res = await fetch(`${API_URL}/api/admin/users`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         

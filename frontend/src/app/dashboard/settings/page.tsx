@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { User, Mail, Shield, Bell, Globe, Save, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/auth';
 
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null);
@@ -23,9 +24,8 @@ export default function SettingsPage() {
         return;
       }
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       try {
-        const res = await fetch(`${apiUrl}/api/users/me`, {
+        const res = await fetch(`${API_URL}/api/users/me`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {
@@ -57,10 +57,9 @@ export default function SettingsPage() {
     setSaving(true);
     setError("");
     const token = localStorage.getItem('token');
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     
     try {
-      const res = await fetch(`${apiUrl}/api/users/me/password`, {
+      const res = await fetch(`${API_URL}/api/users/me/password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

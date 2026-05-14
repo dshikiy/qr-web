@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { 
   QrCode, 
   UserPlus, 
@@ -31,9 +31,13 @@ export default function ActivatePage({ params }: { params: Promise<{ uuid: strin
   const [showSuccess, setShowSuccess] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { uuid } = use(params);
 
   useEffect(() => {
+    const type = searchParams.get("type");
+    if (type) setTagType(type);
+
     const verifyTag = async () => {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       try {

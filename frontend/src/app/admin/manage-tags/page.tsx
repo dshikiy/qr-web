@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/auth";
 
 export default function AdminManageTagsPage() {
   const [tags, setTags] = useState<any[]>([]);
@@ -27,10 +28,10 @@ export default function AdminManageTagsPage() {
 
   const fetchTags = async () => {
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
     
     try {
-      const res = await fetch(`${apiUrl}/api/admin/tags`, {
+      const res = await fetch(`${API_URL}/api/admin/tags`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       
@@ -60,10 +61,10 @@ export default function AdminManageTagsPage() {
     if (!confirm("Бұл бирканы иесінен ажыратуды растайсыз ба?")) return;
     
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
     
     try {
-      const res = await fetch(`${apiUrl}/api/admin/tags/${tagId}/unlink`, {
+      const res = await fetch(`${API_URL}/api/admin/tags/${tagId}/unlink`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });

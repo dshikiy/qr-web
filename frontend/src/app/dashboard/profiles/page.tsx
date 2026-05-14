@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { User, Plus, Edit2, Phone, Save, X, Loader2, Trash2, AlertCircle, FileText, Settings, PlusCircle, Camera, Upload, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/auth";
 
 interface Profile {
   id: string;
@@ -37,9 +38,9 @@ export default function ProfilesPage() {
       return;
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
     try {
-      const res = await fetch(`${apiUrl}/api/profiles`, {
+      const res = await fetch(`${API_URL}/api/profiles`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -69,12 +70,11 @@ export default function ProfilesPage() {
     if (profileId) {
       setUploading(true);
       const token = localStorage.getItem("token");
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const formData = new FormData();
       formData.append("file", file);
 
       try {
-        const res = await fetch(`${apiUrl}/api/profiles/${profileId}/upload-photo`, {
+        const res = await fetch(`${API_URL}/api/profiles/${profileId}/upload-photo`, {
           method: "POST",
           headers: { "Authorization": `Bearer ${token}` },
           body: formData
@@ -114,9 +114,8 @@ export default function ProfilesPage() {
     setSaving(true);
     setError("");
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     try {
-      const res = await fetch(`${apiUrl}/api/profiles/${id}`, {
+      const res = await fetch(`${API_URL}/api/profiles/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -149,9 +148,8 @@ export default function ProfilesPage() {
     setSaving(true);
     setError("");
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     try {
-      const res = await fetch(`${apiUrl}/api/profiles`, {
+      const res = await fetch(`${API_URL}/api/profiles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +169,7 @@ export default function ProfilesPage() {
         if (fileInputRef.current?.files?.[0]) {
           const formData = new FormData();
           formData.append("file", fileInputRef.current.files[0]);
-          await fetch(`${apiUrl}/api/profiles/${newProfile.id}/upload-photo`, {
+          await fetch(`${API_URL}/api/profiles/${newProfile.id}/upload-photo`, {
             method: "POST",
             headers: { "Authorization": `Bearer ${token}` },
             body: formData
@@ -217,9 +215,8 @@ export default function ProfilesPage() {
     
     setError("");
     const token = localStorage.getItem("token");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     try {
-      const res = await fetch(`${apiUrl}/api/profiles/${id}`, {
+      const res = await fetch(`${API_URL}/api/profiles/${id}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });

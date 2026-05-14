@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/auth";
 
 export default function AdminPage() {
   const [stats, setStats] = useState<any>(null);
@@ -29,9 +30,8 @@ export default function AdminPage() {
         return;
       }
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       try {
-        const res = await fetch(`${apiUrl}/api/admin/stats`, {
+        const res = await fetch(`${API_URL}/api/admin/stats`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         
