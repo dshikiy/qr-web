@@ -377,27 +377,38 @@ export default function DashboardPage() {
               <div>
                 <div className="flex justify-between items-start mb-6">
                   {editingId === tag.id ? (
-                    <div className="flex flex-col gap-2 w-full">
-                      <select 
-                        value={editType} 
-                        onChange={(e) => setEditType(e.target.value)}
-                        className="px-4 py-2 rounded-xl border border-gray-200 text-sm outline-none bg-gray-50"
-                      >
-                        {[
-                          { label: "Kids", value: "KIDS" },
-                          { label: "Pets", value: "PETS" },
-                          { label: "Travel", value: "TRAVEL" },
-                          { label: "Tech", value: "TECH" }
-                        ].map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-                      </select>
-                      <select 
-                        value={editProfileId} 
-                        onChange={(e) => setEditProfileId(e.target.value)}
-                        className="px-4 py-2 rounded-xl border border-gray-200 text-sm outline-none bg-gray-50"
-                      >
-                        <option value="">Профильді таңдаңыз</option>
-                        {profiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                      </select>
+                    <div className="flex flex-col gap-4 w-full bg-gray-50/50 p-4 rounded-2xl border border-blue-100/50 mb-4 animate-in fade-in slide-in-from-top-2">
+                      <div>
+                        <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2 block px-1">Бирка түрі</label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {PRODUCTS.map(p => (
+                            <button 
+                              key={p.id}
+                              type="button"
+                              onClick={() => setEditType(p.id.toUpperCase())}
+                              className={`py-2 px-3 rounded-xl text-[10px] font-bold border transition-all ${
+                                editType === p.id.toUpperCase() 
+                                  ? "bg-blue-600 border-blue-600 text-white" 
+                                  : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
+                              }`}
+                            >
+                              {p.title.replace('SafeTag ', '')}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2 block px-1">Профиль</label>
+                        <select 
+                          value={editProfileId} 
+                          onChange={(e) => setEditProfileId(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-100 text-xs font-bold outline-none bg-white focus:ring-2 focus:ring-blue-500/10 transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="">Таңдаңыз</option>
+                          {profiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                        </select>
+                      </div>
                     </div>
                   ) : (
                     <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${getTypeStyles(tag.tag_type)}`}>
@@ -473,6 +484,15 @@ export default function DashboardPage() {
                     >
                       <Download size={16} />
                     </button>
+                    {tag.profile_id && (
+                      <button 
+                        onClick={() => router.push('/dashboard/profiles')}
+                        className="p-3 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl transition-all"
+                        title="Профильді өңдеу"
+                      >
+                        <UserIcon size={16} />
+                      </button>
+                    )}
                     <button 
                       onClick={() => { setEditingId(tag.id); setEditType(tag.tag_type); setEditProfileId(tag.profile_id || ""); }}
                       className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-900 transition-all"

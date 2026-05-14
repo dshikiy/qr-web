@@ -36,6 +36,8 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "http://127.0.0.1:3002",
+        "https://qr-ppfaiml2p-dauletyardev-2755s-projects.vercel.app",
+        "https://qr-web-frontend.vercel.app", # Potential production domain
     ],
     allow_credentials=True,
     allow_methods=["*"],
