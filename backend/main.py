@@ -37,7 +37,7 @@ app.add_middleware(
         "http://127.0.0.1:3001",
         "http://127.0.0.1:3002",
         "https://qr-ppfaiml2p-dauletyardev-2755s-projects.vercel.app",
-        "https://qr-web-frontend.vercel.app", # Potential production domain
+        "https://qr-web-five.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -62,9 +62,32 @@ async def register(user: schemas.UserCreate, db: Session = Depends(database.get_
     return new_user
 
 @app.post("/api/auth/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
-    user = db.query(models.User).filter(models.User.email == form_data.username).first()
-    if not user or not auth.verify_password(form_data.password, user.password_hash):
+async def login(
+    login_data: Optional[schemas.UserCreate] = None, 
+    form_data: OAuth2PasswordRequestForm = Depends(), 
+    db: Session = Depends(database.get_db)
+):
+    # Try to get credentials from JSON if form_data is empty (OAuth2PasswordRequestForm usually takes username/password)
+    # However, OAuth2PasswordRequestForm is always 'instantiated' by Depends, but might be empty if no form data sent.
+    # Actually, FastAPI might complain if both are present. 
+    # Let's use a more robust way to support both.
+    
+    username = None
+    password = None
+
+    # If it's a JSON request (common in modern React/Next.js)
+    if login_data:
+        username = login_data.email
+        password = login_data.password
+    else:
+        username = form_data.username
+        password = form_data.password
+
+    if not username:
+        raise HTTPException(status_code=422, detail="Missing username/email")
+
+    user = db.query(models.User).filter(models.User.email == username).first()
+    if not user or not auth.verify_password(password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
