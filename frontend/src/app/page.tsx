@@ -412,7 +412,7 @@ export default function LandingPage() {
               <ul className="space-y-4 text-gray-500 font-bold text-sm">
                 <li>info@safetag.kz</li>
                 <li>+7 (700) 123 45 67</li>
-                <li>Алматы қ., Абай даңғылы 10</li>
+                <li>Ақтау қ. 28-й мкр 46/1</li>
               </ul>
             </div>
           </div>
